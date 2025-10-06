@@ -42,6 +42,9 @@
         .primary-btn {
             @apply w-full flex items-center justify-center gap-2 gradient-bg text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-transform duration-200 transform hover:scale-105;
         }
+        .secondary-btn {
+             @apply w-full flex items-center justify-center gap-2 bg-white text-emerald-600 border-2 border-emerald-500 font-bold py-3 px-6 rounded-xl shadow-lg transition-transform duration-200 transform hover:scale-105;
+        }
         .option-button {
             @apply bg-white/80 backdrop-blur-sm text-gray-800 font-bold p-4 rounded-xl shadow-lg border-2 border-transparent transition-all duration-200 flex flex-col items-center justify-center text-center h-32;
         }
@@ -49,7 +52,7 @@
             @apply ring-4 ring-emerald-300 transform scale-105;
         }
         .result-card {
-            @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 transform hover:-translate-y-1;
+            @apply bg-white rounded-xl shadow-lg overflow-hidden;
         }
     </style>
 </head>
@@ -98,55 +101,45 @@
                 </button>
             </div>
         </div>
-
     </div>
+    
+    <!-- Instagram Modal -->
+    <div id="instagram-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center p-4">
+        <div class="bg-white rounded-lg shadow-xl relative max-w-md w-full">
+            <div id="instagram-modal-body" class="p-2">
+                <!-- Instagram embed will be injected here -->
+            </div>
+            <button id="instagram-modal-close-button" class="absolute -top-3 -right-3 bg-white rounded-full p-2 shadow-lg hover:bg-gray-200 transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-gray-800"></i>
+            </button>
+        </div>
+    </div>
+
 
     <script>
     // --- Data Definitions ---
     const activities = {
-        'q1': { name: '知多半島の里山保全', desc: '竹を切り、チップに再生！里山が蘇る瞬間を仲間と共に。', img: 'Q1.jpg', tags: ['forest', 'physical', 'craft'] },
-        'q2': { name: '佐久島のアマモ場再生活動', desc: '青い海に希望のアマモを植える、"海のゆりかご"再生活動。', img: 'Q2.jpg', tags: ['ocean', 'marine_life', 'plant'] },
-        'q3': { name: '新城・設楽の湧水湿地保全', desc: '"日本の重要湿地500"で、希少な生態系を守る。', img: 'Q3.jpg', tags: ['wetland', 'rare_species', 'research'] },
-        'q4': { name: '西三河の外来種アカミミガメ駆除', desc: '地域のビオトープを守るため、外来種アカミミガメを捕獲！', img: 'Q4.jpg', tags: ['invasive_species', 'animal', 'research'] },
-        'q5': { name: '東部丘陵での稲刈り体験', desc: '日本の原風景、海上の森で、食と農を学ぶ。', img: 'Q5.jpg', tags: ['agriculture', 'physical', 'traditional'] },
-        'q6': { name: '東三河での生き物調査', desc: 'コドラート調査に昆虫採集！子どもたちと生き物を探す一日。', img: 'Q6.jpg', tags: ['research', 'education', 'insect', 'kids'] },
-        'q7': { name: '渥美半島の海岸清掃', desc: '最高のロケーションで、地球にいいこと。', img: 'Q7.jpg', tags: ['ocean', 'cleanup', 'physical'] },
-        'q8': { name: '尾張北部の里山保全', desc: '本格的な林業体験で、森と向き合う。', img: 'Q8.jpg', tags: ['forest', 'physical', 'expert'] },
-        'q9': { name: '尾張西部のビオトープ整備', desc: '生き物の"すみか"をデザイン＆創造！', img: 'Q9.jpg', tags: ['design', 'create', 'animal'] },
-        'j1': { name: 'SDGs AICHI EXPO', desc: '愛知の未来を考える大舞台で、GAIAの声を届けよう！', img: 'J1.jpg', tags: ['event', 'presentation', 'communication'] },
-        'j2': { name: 'TABふれあいフェス', desc: '子どもから大人まで！生き物ふれあいブースで笑顔の輪を広げる。', img: 'J2.jpg', tags: ['event', 'education', 'kids'] },
-        'j3': { name: '岡崎自然体験の森', desc: '森の声を聞きながら保全活動。自然と一体になる特別な時間。', img: 'J3.jpg', tags: ['forest', 'physical', 'traditional'] }
+        'q1': { name: '知多半島の里山保全', desc: '竹を切り、チップに再生！里山が蘇る瞬間を仲間と共に。', img: 'Q1.jpg', tags: ['forest', 'physical', 'craft'], embed: ` <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DOLE1Wyj3-i/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/DOLE1Wyj3-i/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/DOLE1Wyj3-i/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">GAIA(@gaia_aichi)がシェアした投稿</a></p></div></blockquote>
+        ` },
+        'q2': { name: '佐久島のアマモ場再生活動', desc: '青い海に希望のアマモを植える、"海のゆりかご"再生活動。', img: 'Q2.jpg', tags: ['ocean', 'marine_life', 'plant'], embed: `<blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DMWgCWAhuCa/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/DMWgCWAhuCa/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/DMWgCWAhuCa/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">GAIA(@gaia_aichi)がシェアした投稿</a></p></div></blockquote>
+        ` },
+        'q3': { name: '新城・設楽の湧水湿地保全', desc: '"日本の重要湿地500"で、希少な生態系を守る。', img: 'Q3.jpg', tags: ['wetland', 'rare_species', 'research'], embed: `<blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DNr2U6t3nzj/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/DNr2U6t3nzj/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/DNr2U6t3nzj/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">GAIA(@gaia_aichi)がシェアした投稿</a></p></div></blockquote>
+        ` },
+        'q4': { name: '西三河の外来種アカミミガメ駆除', desc: '地域のビオトープを守るため、外来種アカミミガメを捕獲！', img: 'Q4.jpg', tags: ['invasive_species', 'animal', 'research'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DAgTmr5S1IX/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'q5': { name: '東部丘陵での稲刈り体験', desc: '日本の原風景、海上の森で、食と農を学ぶ。', img: 'Q5.jpg', tags: ['agriculture', 'physical', 'traditional'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DAhKpOMzPAR/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'q6': { name: '東三河での生き物調査', desc: 'コドラート調査に昆虫採集！子どもたちと生き物を探す一日。', img: 'Q6.jpg', tags: ['research', 'education', 'insect', 'kids'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DBpekQeyNiP/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'q7': { name: '渥美半島の海岸清掃', desc: '最高のロケーションで、地球にいいこと。', img: 'Q7.jpg', tags: ['ocean', 'cleanup', 'physical'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DCQP1j4S010/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'q8': { name: '尾張北部の里山保全', desc: '本格的な林業体験で、森と向き合う。', img: 'Q8.jpg', tags: ['forest', 'physical', 'expert'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DDcBhA5Szz8/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'q9': { name: '尾張西部のビオトープ整備', desc: '生き物の"すみか"をデザイン＆創造！', img: 'Q9.jpg', tags: ['design', 'create', 'animal'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DDng2L3yzXS/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'j1': { name: 'SDGs AICHI EXPO', desc: '愛知の未来を考える大舞台で、GAIAの声を届けよう！', img: 'J1.jpg', tags: ['event', 'presentation', 'communication'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DBGy3o5SKcj/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'j2': { name: 'TABふれあいフェス', desc: '子どもから大人まで！生き物ふれあいブースで笑顔の輪を広げる。', img: 'J2.jpg', tags: ['event', 'education', 'kids'], embed: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DAgWlsoS2DQ/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>` },
+        'j3': { name: '岡崎自然体験の森', desc: '森の声を聞きながら保全活動。自然と一体になる特別な時間。', img: 'J3.jpg', tags: ['forest', 'physical', 'traditional'], embed: null } // No embed code available
     };
 
-    const quizData = [
-        {
-            question: "どんな場所での活動に興味がある？",
-            answers: [
-                { text: "森や緑に囲まれたい", tags: ['forest', 'agriculture'], icon: 'leaf' },
-                { text: "海や川など、水辺が好き", tags: ['ocean', 'wetland', 'marine_life'], icon: 'waves' },
-                { text: "珍しい生き物に出会いたい", tags: ['animal', 'insect', 'rare_species'], icon: 'bug' },
-                { text: "イベント会場で多くの人と話したい", tags: ['event', 'communication'], icon: 'users' }
-            ]
-        },
-        {
-            question: "どうやって貢献したい？",
-            answers: [
-                { text: "体を動かして汗を流したい", tags: ['physical', 'cleanup'], icon: 'move' },
-                { text: "じっくり観察や調査をしたい", tags: ['research'], icon: 'search' },
-                { text: "ものづくりやデザインをしてみたい", tags: ['craft', 'design', 'create'], icon: 'pencil-ruler' },
-                { text: "人に伝えたり、教えたりしたい", tags: ['presentation', 'education', 'kids'], icon: 'megaphone' }
-            ]
-        },
-        {
-            question: "活動に求めるものは？",
-            answers: [
-                { text: "達成感を味わいたい", tags: ['physical', 'cleanup', 'create'], icon: 'award' },
-                { text: "専門的な知識や技術を学びたい", tags: ['expert', 'research'], icon: 'brain-circuit' },
-                { text: "子どもたちと触れ合いたい", tags: ['kids', 'education'], icon: 'baby' },
-                { text: "とにかく自然の中でリフレッシュしたい", tags: ['forest', 'ocean', 'wetland'], icon: 'wind' }
-            ]
-        }
-    ];
+    const quizData = [ /* ... (same as before) ... */ ];
+    quizData[0] = { question: "どんな場所での活動に興味がある？", answers: [ { text: "森や緑に囲まれたい", tags: ['forest', 'agriculture'], icon: 'leaf' }, { text: "海や川など、水辺が好き", tags: ['ocean', 'wetland', 'marine_life'], icon: 'waves' }, { text: "珍しい生き物に出会いたい", tags: ['animal', 'insect', 'rare_species'], icon: 'bug' }, { text: "イベント会場で多くの人と話したい", tags: ['event', 'communication'], icon: 'users' } ] };
+    quizData[1] = { question: "どうやって貢献したい？", answers: [ { text: "体を動かして汗を流したい", tags: ['physical', 'cleanup'], icon: 'move' }, { text: "じっくり観察や調査をしたい", tags: ['research'], icon: 'search' }, { text: "ものづくりやデザインをしてみたい", tags: ['craft', 'design', 'create'], icon: 'pencil-ruler' }, { text: "人に伝えたり、教えたりしたい", tags: ['presentation', 'education', 'kids'], icon: 'megaphone' } ] };
+    quizData[2] = { question: "活動に求めるものは？", answers: [ { text: "達成感を味わいたい", tags: ['physical', 'cleanup', 'create'], icon: 'award' }, { text: "専門的な知識や技術を学びたい", tags: ['expert', 'research'], icon: 'brain-circuit' }, { text: "子どもたちと触れ合いたい", tags: ['kids', 'education'], icon: 'baby' }, { text: "とにかく自然の中でリフレッシュしたい", tags: ['forest', 'ocean', 'wetland'], icon: 'wind' } ] };
 
     // --- DOM Elements ---
     const startScreen = document.getElementById('start-screen');
@@ -158,6 +151,12 @@
     const questionText = document.getElementById('question-text');
     const answerOptions = document.getElementById('answer-options');
     const progressText = document.getElementById('progress-text');
+    const mainResultDiv = document.getElementById('main-result');
+    const otherResultsDiv = document.getElementById('other-results');
+    const instagramModal = document.getElementById('instagram-modal');
+    const instagramModalBody = document.getElementById('instagram-modal-body');
+    const instagramModalCloseBtn = document.getElementById('instagram-modal-close-button');
+
 
     // --- State ---
     let currentQuestionIndex = 0;
@@ -166,122 +165,78 @@
 
     // --- Functions ---
 
-    function switchCard(hideCard, showCard) {
-        hideCard.classList.add('hidden-card');
-        setTimeout(() => {
-            hideCard.classList.add('hidden');
-            showCard.classList.remove('hidden');
-            setTimeout(() => showCard.classList.remove('hidden-card'), 50);
-        }, 500);
-    }
+    function switchCard(hideCard, showCard) { /* ... (same as before) ... */ }
+    function startQuiz() { /* ... (same as before) ... */ }
+    function displayQuestion() { /* ... (same as before) ... */ }
+    function selectAnswer(tags) { /* ... (same as before) ... */ }
+    function goBack() { /* ... (same as before) ... */ }
+    switchCard = (hideCard, showCard) => { hideCard.classList.add('hidden-card'); setTimeout(() => { hideCard.classList.add('hidden'); showCard.classList.remove('hidden'); setTimeout(() => showCard.classList.remove('hidden-card'), 50); }, 500); };
+    startQuiz = () => { currentQuestionIndex = 0; scores = {}; answerHistory = []; Object.keys(activities).forEach(key => { scores[key] = 0; }); displayQuestion(); switchCard(startScreen, questionScreen); };
+    displayQuestion = () => { if (currentQuestionIndex >= quizData.length) { showResults(); return; } const q = quizData[currentQuestionIndex]; questionText.textContent = q.question; progressText.textContent = `質問 ${currentQuestionIndex + 1} / ${quizData.length}`; answerOptions.innerHTML = ''; q.answers.forEach(a => { const btn = document.createElement('button'); btn.className = 'option-button'; btn.innerHTML = `<i data-lucide="${a.icon}" class="w-10 h-10 text-emerald-600 mb-2"></i><span class="text-sm">${a.text}</span>`; btn.onclick = () => selectAnswer(a.tags); answerOptions.appendChild(btn); }); lucide.createIcons(); backBtn.classList.toggle('hidden', currentQuestionIndex === 0); };
+    selectAnswer = (tags) => { answerHistory.push(tags); tags.forEach(tag => { for (const key in activities) { if (activities[key].tags.includes(tag)) scores[key]++; } }); currentQuestionIndex++; displayQuestion(); };
+    goBack = () => { if (currentQuestionIndex === 0) return; currentQuestionIndex--; const lastTags = answerHistory.pop(); lastTags.forEach(tag => { for (const key in activities) { if (activities[key].tags.includes(tag)) scores[key]--; } }); displayQuestion(); };
 
-    function startQuiz() {
-        currentQuestionIndex = 0;
-        scores = {};
-        answerHistory = [];
-        Object.keys(activities).forEach(key => { scores[key] = 0; });
-        displayQuestion();
-        switchCard(startScreen, questionScreen);
-    }
-
-    function displayQuestion() {
-        if (currentQuestionIndex >= quizData.length) {
-            showResults();
-            return;
-        }
-
-        const currentQuestion = quizData[currentQuestionIndex];
-        questionText.textContent = currentQuestion.question;
-        progressText.textContent = `質問 ${currentQuestionIndex + 1} / ${quizData.length}`;
-        answerOptions.innerHTML = '';
-
-        currentQuestion.answers.forEach(answer => {
-            const button = document.createElement('button');
-            button.className = 'option-button';
-            button.innerHTML = `
-                <i data-lucide="${answer.icon}" class="w-10 h-10 text-emerald-600 mb-2"></i>
-                <span class="text-sm">${answer.text}</span>
-            `;
-            button.onclick = () => selectAnswer(answer.tags);
-            answerOptions.appendChild(button);
-        });
-        
-        lucide.createIcons();
-        backBtn.classList.toggle('hidden', currentQuestionIndex === 0);
-    }
-
-    function selectAnswer(tags) {
-        answerHistory.push(tags);
-        tags.forEach(tag => {
-            for (const key in activities) {
-                if (activities[key].tags.includes(tag)) {
-                    scores[key]++;
-                }
-            }
-        });
-        currentQuestionIndex++;
-        displayQuestion();
-    }
-    
-    function goBack() {
-        if (currentQuestionIndex === 0) return;
-        
-        currentQuestionIndex--;
-        const lastAnswerTags = answerHistory.pop();
-
-        lastAnswerTags.forEach(tag => {
-            for (const key in activities) {
-                if (activities[key].tags.includes(tag)) {
-                    scores[key]--;
-                }
-            }
-        });
-        
-        displayQuestion();
-    }
 
     function showResults() {
         const sortedActivities = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
         
         const mainResultKey = sortedActivities[0];
-        const mainResultData = activities[mainResultKey];
-        document.getElementById('main-result').innerHTML = createResultCard(mainResultData, true);
+        mainResultDiv.innerHTML = createResultCard(mainResultKey, activities[mainResultKey], true);
 
         const otherResultsContainer = document.getElementById('other-results-container');
-        const otherResultsDiv = document.getElementById('other-results');
         otherResultsDiv.innerHTML = '';
         
         const otherKeys = sortedActivities.slice(1, 3).filter(key => scores[key] > 0);
         if (otherKeys.length > 0) {
             otherKeys.forEach(key => {
-                otherResultsDiv.innerHTML += createResultCard(activities[key], false);
+                otherResultsDiv.innerHTML += createResultCard(key, activities[key], false);
             });
             otherResultsContainer.classList.remove('hidden');
         } else {
             otherResultsContainer.classList.add('hidden');
         }
 
+        // Add event listeners to the new buttons
+        document.querySelectorAll('.learn-more-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const activityKey = e.currentTarget.dataset.activityKey;
+                openInstagramModal(activityKey);
+            });
+        });
+        
         switchCard(questionScreen, resultScreen);
     }
 
-    function createResultCard(activity, isMain) {
+    function createResultCard(key, activity, isMain) {
         if (!activity) return '';
+        const hasEmbed = activity.embed ? '' : 'hidden'; // Hide button if no embed code
         if (isMain) {
             return `
                 <div class="result-card">
                     <img src="${activity.img}" alt="${activity.name}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-emerald-600">${activity.name}</h3>
-                        <p class="text-gray-600 mt-2">${activity.desc}</p>
+                    <div class="p-4 space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-emerald-600">${activity.name}</h3>
+                            <p class="text-gray-600 mt-2">${activity.desc}</p>
+                        </div>
+                        <button class="secondary-btn learn-more-btn ${hasEmbed}" data-activity-key="${key}">
+                            <i data-lucide="instagram"></i>
+                            活動をもっと知る
+                        </button>
                     </div>
                 </div>`;
         } else {
             return `
-                <div class="result-card flex items-center p-3">
-                    <img src="${activity.img}" alt="${activity.name}" class="w-16 h-16 object-cover rounded-lg mr-4">
-                    <div>
-                        <h4 class="font-bold text-gray-800">${activity.name}</h4>
+                <div class="result-card flex items-center p-3 justify-between">
+                    <div class="flex items-center">
+                        <img src="${activity.img}" alt="${activity.name}" class="w-16 h-16 object-cover rounded-lg mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">${activity.name}</h4>
+                        </div>
                     </div>
+                    <button class="learn-more-btn ${hasEmbed}" data-activity-key="${key}">
+                        <i data-lucide="instagram" class="w-6 h-6 text-gray-500 hover:text-emerald-600"></i>
+                    </button>
                 </div>`;
         }
     }
@@ -290,14 +245,43 @@
         switchCard(resultScreen, startScreen);
     }
 
+    function openInstagramModal(activityKey) {
+        const activity = activities[activityKey];
+        if (!activity || !activity.embed) return;
+        
+        instagramModalBody.innerHTML = activity.embed;
+        instagramModal.classList.remove('hidden');
+        
+        try {
+            if (window.instgrm) {
+                window.instgrm.Embeds.process();
+            }
+        } catch(e) {
+            console.error("Error processing Instagram embed:", e);
+        }
+    }
+
+    function closeInstagramModal() {
+        instagramModal.classList.add('hidden');
+        instagramModalBody.innerHTML = '';
+    }
+
     // --- Event Listeners ---
     startBtn.addEventListener('click', startQuiz);
     retryBtn.addEventListener('click', resetQuiz);
     backBtn.addEventListener('click', goBack);
+    instagramModalCloseBtn.addEventListener('click', closeInstagramModal);
+    instagramModal.addEventListener('click', (e) => {
+        if (e.target === instagramModal) {
+            closeInstagramModal();
+        }
+    });
 
     lucide.createIcons();
     </script>
+
+    <!-- Instagram Embed Script (must be at the end) -->
+    <script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>
-
 
